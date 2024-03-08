@@ -29,8 +29,9 @@ export class SuinoComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.spinner = false;
-        console.log('The dialog was closed');
-        console.log(element);
+        // console.log('[SuinoComponent] The dialog was closed');
+        // console.log('[SuinoComponent] element: ', element);
+        this.service.novoSuinoAdicionado();
   
         setTimeout(() => {
           this.spinner = true;

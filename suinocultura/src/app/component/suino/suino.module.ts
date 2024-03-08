@@ -22,17 +22,21 @@ import {
   MatDialogContent,
   MatDialogActions,
   MatDialogClose,
-} from '@angular/material/dialog';
+} from '@angular/material/dialog';;
 
 import { SuinoComponent } from './suino.component';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
+import { SuinoListComponent } from './suino-list/suino-list.component';
+import { IdadePipe } from '../../pipe/idade.pipe';
 
 
 
 @NgModule({
   declarations: [
     SuinoComponent,
-    SuinoFormComponent
+    SuinoFormComponent,
+    SuinoListComponent,
+    IdadePipe
   ],
   imports: [
     CommonModule,

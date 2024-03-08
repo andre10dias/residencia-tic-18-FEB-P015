@@ -3,7 +3,7 @@
       <button mat-button mat-dialog-close>X</button>
     </div>
     <div class="dialog-title">
-      <h2>{{titulo}}</h2>
+      <h2>{{title}}</h2>
     </div>
   </div>
   <div class="dialog-conteiner">
@@ -134,7 +134,9 @@
       </mat-dialog-content>
       <hr>
       <mat-dialog-actions>
-        <button type="submit" mat-button color="primary" (click)="suinoFormRef.ngSubmit.emit()">Salvar</button>
-        <button mat-button [mat-dialog-close]="true">Cancelar</button>
+        <button type="submit" mat-button color="primary" 
+            (click)="suinoFormRef.ngSubmit.emit()"  [mat-dialog-close]="true"
+        >{{btnText}}</button>
+        <button mat-button [mat-dialog-close]="false">Cancelar</button>
       </mat-dialog-actions>
 </div>

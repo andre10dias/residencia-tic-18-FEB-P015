@@ -13,7 +13,8 @@ export class SuinoFormComponent {
   @ViewChild('suinoFormRef') suinoFormRef: any;
   suinoForm: FormGroup;
 
-  titulo = 'Cadastrar Suino';
+  title = 'Cadastrar Suino';
+  btnText = 'Cadastrar';
   snackBarDuration = 5000;
 
   constructor(
@@ -96,7 +97,7 @@ export class SuinoFormComponent {
       return;
     }
 
-    this.service.receberDadosFormulario(this.suinoForm);
+    this.service.save(this.suinoForm.value);
     this.openSnackBar();
   }
 
