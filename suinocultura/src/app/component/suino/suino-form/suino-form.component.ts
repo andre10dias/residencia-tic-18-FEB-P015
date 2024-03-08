@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SuinoService } from '../../../service/suino.service';
 import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
 import { ActionEnum } from '../../../enum/action-enum';
+import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
 
 @Component({
   selector: 'app-suino-form',
@@ -19,7 +20,6 @@ export class SuinoFormComponent implements OnInit {
   btnText = 'Cadastrar';
   action = ActionEnum.CREATE;
   dadosItemSelecionado: SuinoFormDTO = {} as SuinoFormDTO;
-  snackBarDuration = 5000;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -103,27 +103,25 @@ export class SuinoFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('submit');
-    console.log('suinoform: ', this.suinoForm.value);
-
     if (this.suinoForm.invalid) {
-      console.log('form invalido');
       this.openSnackBar('Por favor, preencha o formulário corretamente.');
       return;
     }
 
     if (this.action == ActionEnum.CREATE) {
       this.service.save(this.suinoForm.value);
-    } else if (this.action == ActionEnum.EDIT) {
+      this.openSnackBar();
+    } 
+    else if (this.action == ActionEnum.EDIT) {
       this.service.edit(this.suinoForm.value);
+      this.openSnackBar('Atualizado com sucesso!');
     }
 
-    this.openSnackBar();
   }
 
   openSnackBar (msg: string = 'Cadastrado com sucesso!'): void {
     this.snackBar.open(msg, 'X', {
-      duration: this.snackBarDuration,
+      duration: SnackbarConfigEnum.DURATION,
       horizontalPosition: 'right',
       verticalPosition: 'top'
     });

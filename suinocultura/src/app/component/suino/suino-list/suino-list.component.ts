@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Sort, MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SuinoService } from '../../../service/suino.service';
 import { SuinoUtil } from '../../../util/suino.util';
@@ -14,7 +15,7 @@ import { DialogComponent } from '../../dialog/dialog.component';
 import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
 import { SuinoFormComponent } from '../suino-form/suino-form.component';
 import { ActionEnum } from '../../../enum/action-enum';
-// import { DialogComponent } from '../../dialog/dialog.component';
+import { SnackbarConfigEnum } from '../../../enum/snackbar-config.enum';
 
 @Component({
   selector: 'app-suino-list',
@@ -41,9 +42,10 @@ export class SuinoListComponent implements OnInit {
 
   constructor(
     private service: SuinoService,
-    private converter: SuinoConverter,
     private util: SuinoUtil,
-    public dialog: MatDialog
+    private converter: SuinoConverter,
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog,
   ) {
     this.carregardadosList();
   }
@@ -137,9 +139,12 @@ export class SuinoListComponent implements OnInit {
   }
 
   removeItem(id: string): void {
-    this.service.delete(id);
     const index = this.dataSource.data.findIndex(item => item.id === id);
+
     if (index !== -1) {
+      this.service.delete(id);
+      this.openSnackBar();
+
       this.dataSource.data.splice(index, 1);
       this.dataSource._updateChangeSubscription();
     }
@@ -192,9 +197,7 @@ export class SuinoListComponent implements OnInit {
         case 'sexo':
           return this.util.compare(a.sexo, b.sexo, isAsc);
         case 'idade':
-          let idadeA = +this.service.retornarIdade(a.dataNascimento);
-          let idadeB = +this.service.retornarIdade(b.dataNascimento);
-          return this.util.compare(idadeA, idadeB, isAsc);
+          return this.util.compareDates(a.dataNascimento, b.dataNascimento, isAsc);
         default:
           return this.util.compareDates(a.createdAt, b.createdAt, isAsc);
       }
@@ -204,6 +207,14 @@ export class SuinoListComponent implements OnInit {
   // isScreenSmall(): boolean {
   //   return this.screenWidth <= 500;
   // }
+
+  openSnackBar (msg: string = 'Removido com sucesso!'): void {
+    this.snackBar.open(msg, 'X', {
+      duration: SnackbarConfigEnum.DURATION,
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    });
+  }
 
   spinnerOn(): void {
     this.spinner = false;

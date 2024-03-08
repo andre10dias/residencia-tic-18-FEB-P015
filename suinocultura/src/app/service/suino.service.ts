@@ -141,8 +141,6 @@ export class SuinoService {
       updatedAt: new Date()
     }
 
-    console.log('[suino.service] edit: ', edit);
-
     this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
       next: (data: any) => {
         this._suinoAtualizado = {
@@ -156,8 +154,6 @@ export class SuinoService {
           sexo: edit.sexo,
           createdAt: this.util.formatarData(edit.createdAt, 'dd/MM/yyyy')
         };
-
-        console.log('[suino.service] _suinoAtualizado: ', this._suinoAtualizado);
       },
       error: (error: any) => {
         console.log('error: ', error)
@@ -174,27 +170,6 @@ export class SuinoService {
         console.log('error: ', error)
       }
     });
-  }
-
-  retornarIdade(dataNascimento: string): string {
-    if (!dataNascimento) return '';
-
-    let data = this.util.stringToDate(dataNascimento);
-
-    if (!data) return '';
-
-    const hoje = new Date();
-    const nascimento = new Date(data);
-
-    let idadeEmMeses = (hoje.getFullYear() - nascimento.getFullYear()) * 12;
-    idadeEmMeses -= nascimento.getMonth();
-    idadeEmMeses += hoje.getMonth();
-
-    if (hoje.getDate() < nascimento.getDate()) {
-      idadeEmMeses--;
-    }
-
-    return idadeEmMeses.toString();
   }
 
   get sexo(): any[] {
