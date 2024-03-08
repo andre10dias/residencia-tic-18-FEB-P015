@@ -37,6 +37,7 @@ export class SuinoService {
   private novoSuinoSubject = new Subject<any>();
   private novoSuino: SuinoListDTO = {} as SuinoListDTO;
   private _suinoAtualizado: SuinoListDTO = {} as SuinoListDTO;
+  private _suinosFiltrados: SuinoListDTO[] = [];
 
   constructor(
     private http: HttpClient,
@@ -170,6 +171,56 @@ export class SuinoService {
         console.log('error: ', error)
       }
     });
+  }
+
+  filtar(form: any): void {
+    let listaFiltros: Suino[] = [];
+
+    this.getAll().subscribe((listaSuinos: Suino[]) => {
+      listaSuinos.filter((suino: Suino) => {
+        if (form.brincoPai && form.brincoPai == suino.brincoPai) {
+          listaFiltros.push(suino);
+        }
+
+        if (form.brincoMae && form.brincoMae == suino.brincoMae) {
+          listaFiltros.push(suino);
+        }
+
+        if (form.dataNascimento && form.dataNascimento == suino.dataNascimento) {
+          listaFiltros.push(suino);
+        }
+
+        if (form.dataSaida && form.dataSaida == suino.dataSaida) {
+          listaFiltros.push(suino);
+        }
+
+        if (form.status && form.status == suino.status) {
+          listaFiltros.push(suino);
+        }
+
+        if (form.sexo && form.sexo == suino.sexo) {
+          listaFiltros.push(suino);
+        }
+      })
+    });
+
+    listaFiltros.forEach((suino: Suino) => {
+      this._suinosFiltrados.push({
+        id: suino.id,
+        brincoAnimal: suino.brincoAnimal,
+        brincoPai: suino.brincoPai,
+        brincoMae: suino.brincoMae,
+        dataNascimento: this.util.formatarData(suino.dataNascimento, 'dd/MM/yyyy'),
+        dataSaida: this.util.formatarData(suino.dataSaida, 'dd/MM/yyyy'),
+        status: suino.status,
+        sexo: suino.sexo,
+        createdAt: this.util.formatarData(suino.createdAt, 'dd/MM/yyyy')
+      })
+    });
+  }
+
+  get suinosFiltrados(): SuinoListDTO[] {
+    return this._suinosFiltrados;
   }
 
   get sexo(): any[] {

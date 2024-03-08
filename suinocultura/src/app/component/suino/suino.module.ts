@@ -17,6 +17,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatExpansionModule} from '@angular/material/expansion';
 import {
   MatDialogTitle,
   MatDialogContent,
@@ -31,6 +32,7 @@ import { SexoPipe } from '../../pipe/sexo.pipe';
 import { SuinoComponent } from './suino.component';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
 import { SuinoListComponent } from './suino-list/suino-list.component';
+import { SuinoSearchComponent } from './suino-search/suino-search.component';
 
 
 
@@ -41,7 +43,8 @@ import { SuinoListComponent } from './suino-list/suino-list.component';
     SuinoListComponent,
     IdadePipe,
     StatusPipe,
-    SexoPipe
+    SexoPipe,
+    SuinoSearchComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +67,8 @@ import { SuinoListComponent } from './suino-list/suino-list.component';
     MatListModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
   exports: [
     SuinoComponent
