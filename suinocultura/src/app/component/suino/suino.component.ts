@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { SuinoService } from '../../service/suino.service';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
+import { ActionEnum } from '../../enum/action-enum';
 
 @Component({
   selector: 'app-suino',
@@ -23,7 +24,12 @@ export class SuinoComponent {
     const dialogRef = this.dialog.open(SuinoFormComponent, {
       width: '600px',
       disableClose: true,
-      data: element
+      data: { 
+        element: element, 
+        action: ActionEnum.CREATE, 
+        title: 'Cadastrar Suino', 
+        txtButton: 'Cadastrar' 
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -98,7 +98,7 @@ export class SuinoService {
       dataSaida: dataSaida,
       status: form.status,
       sexo: form.sexo,
-      createAt: new Date()
+      createdAt: new Date()
     }
 
     this.http.post(`${this.baseUrl}.json`, create).subscribe({
@@ -111,7 +111,8 @@ export class SuinoService {
           dataNascimento: this.util.formatarData(create.dataNascimento, 'dd/MM/yyyy'),
           dataSaida: this.util.formatarData(create.dataSaida, 'dd/MM/yyyy'),
           status: create.status,
-          sexo: create.sexo
+          sexo: create.sexo,
+          createdAt: this.util.formatarData(create.createdAt, 'dd/MM/yyyy')
         };
       },
       error: (error: any) => {
@@ -120,7 +121,7 @@ export class SuinoService {
     });
   }
 
-  receberDadosFormularioEdit(form: any): void {
+  edit(form: any): void {
     let [anoNasc, mesNasc, diaNasc] = form.dataNascimento.split('-');
     const dataNascimento = new Date(Number(anoNasc), Number(mesNasc) - 1, Number(diaNasc));
     
@@ -136,8 +137,11 @@ export class SuinoService {
       dataSaida: dataSaida,
       status: form.status,
       sexo: form.sexo,
-      updateAt: new Date()
+      createdAt: form.createAt,
+      updatedAt: new Date()
     }
+
+    console.log('[suino.service] edit: ', edit);
 
     this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
       next: (data: any) => {
@@ -149,8 +153,11 @@ export class SuinoService {
           dataNascimento: this.util.formatarData(edit.dataNascimento, 'dd/MM/yyyy'),
           dataSaida: this.util.formatarData(edit.dataSaida, 'dd/MM/yyyy'),
           status: edit.status,
-          sexo: edit.sexo
+          sexo: edit.sexo,
+          createdAt: this.util.formatarData(edit.createdAt, 'dd/MM/yyyy')
         };
+
+        console.log('[suino.service] _suinoAtualizado: ', this._suinoAtualizado);
       },
       error: (error: any) => {
         console.log('error: ', error)

@@ -7,5 +7,5 @@ export interface SuinoCreateDTO {
     dataSaida: Date;
     status: string;
     sexo: string;
-    createAt: Date
+    createdAt: Date
 }

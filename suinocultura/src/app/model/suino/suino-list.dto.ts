@@ -7,4 +7,5 @@ export interface SuinoListDTO {
     dataSaida: string;
     status: string;
     sexo: string;
+    createdAt: string;
 }

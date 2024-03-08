@@ -13,6 +13,7 @@ import { SuinoListDTO } from '../../../model/suino/suino-list.dto';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
 import { SuinoFormComponent } from '../suino-form/suino-form.component';
+import { ActionEnum } from '../../../enum/action-enum';
 // import { DialogComponent } from '../../dialog/dialog.component';
 
 @Component({
@@ -94,12 +95,16 @@ export class SuinoListComponent implements OnInit {
     });
   }
 
-  openDialog(element?: SuinoFormDTO, title: string = '', txtButton: string = ''): void {
-    console.log('[SuinoListComponent] openDialog: ', element);
+  openDialog(element?: SuinoFormDTO): void {
     const dialogRef = this.dialog.open(SuinoFormComponent, {
       width: '600px',
       disableClose: true,
-      data: { element, title, txtButton }
+      data: { 
+        element: element, 
+        action: ActionEnum.EDIT, 
+        title: 'Editar Suíno', 
+        txtButton: 'Editar' 
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -126,7 +131,7 @@ export class SuinoListComponent implements OnInit {
       if (suino) {
         suino.id = id;
         let suinoFormDTO: SuinoFormDTO = this.converter.toSuinoFormDTO(suino);
-        this.openDialog(suinoFormDTO, 'Editar Suíno', 'Editar');
+        this.openDialog(suinoFormDTO);
       }
     });
   }
@@ -191,7 +196,7 @@ export class SuinoListComponent implements OnInit {
           let idadeB = +this.service.retornarIdade(b.dataNascimento);
           return this.util.compare(idadeA, idadeB, isAsc);
         default:
-          return this.util.compareDates(a.dataNascimento, b.dataNascimento, isAsc);
+          return this.util.compareDates(a.createdAt, b.createdAt, isAsc);
       }
     });
   }

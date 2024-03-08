@@ -24,10 +24,13 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';;
 
+import { IdadePipe } from '../../pipe/idade.pipe';
+import { StatusPipe } from '../../pipe/status.pipe';
+import { SexoPipe } from '../../pipe/sexo.pipe';
+
 import { SuinoComponent } from './suino.component';
 import { SuinoFormComponent } from './suino-form/suino-form.component';
 import { SuinoListComponent } from './suino-list/suino-list.component';
-import { IdadePipe } from '../../pipe/idade.pipe';
 
 
 
@@ -36,7 +39,9 @@ import { IdadePipe } from '../../pipe/idade.pipe';
     SuinoComponent,
     SuinoFormComponent,
     SuinoListComponent,
-    IdadePipe
+    IdadePipe,
+    StatusPipe,
+    SexoPipe
   ],
   imports: [
     CommonModule,

@@ -36,7 +36,8 @@ export class SuinoConverter {
                 dataNascimento: this.util.formatarData(data.dataNascimento, 'dd/MM/yyyy'),
                 dataSaida: this.util.formatarData(data.dataSaida, 'dd/MM/yyyy'),
                 status: data.status,
-                sexo: data.sexo
+                sexo: data.sexo,
+                createdAt: this.util.formatarData(data.createdAt, 'dd/MM/yyyy')
             }
 
             suinosListDTO.push(suino);

@@ -1,20 +1,24 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SuinoService } from '../../../service/suino.service';
+import { SuinoFormDTO } from '../../../model/suino/suino-form.dto';
+import { ActionEnum } from '../../../enum/action-enum';
 
 @Component({
   selector: 'app-suino-form',
   templateUrl: './suino-form.component.html',
   styleUrl: './suino-form.component.css'
 })
-export class SuinoFormComponent {
+export class SuinoFormComponent implements OnInit {
   @ViewChild('suinoFormRef') suinoFormRef: any;
   suinoForm: FormGroup;
 
   title = 'Cadastrar Suino';
   btnText = 'Cadastrar';
+  action = ActionEnum.CREATE;
+  dadosItemSelecionado: SuinoFormDTO = {} as SuinoFormDTO;
   snackBarDuration = 5000;
 
   constructor(
@@ -23,6 +27,11 @@ export class SuinoFormComponent {
     public dialogRef: MatDialogRef<SuinoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+    this.title = data.title;
+    this.btnText = data.txtButton;
+    this.action = data.action;
+    this.dadosItemSelecionado = data.element;
+
     this.suinoForm = new FormGroup({
       'id': new FormControl(null),
       'brincoAnimal': new FormControl(null, [
@@ -56,6 +65,12 @@ export class SuinoFormComponent {
         Validators.required
       ])
     });
+  }
+
+  ngOnInit(): void {
+    if (this.dadosItemSelecionado) {
+      this.suinoForm.patchValue(this.dadosItemSelecionado);
+    }
   }
 
   brincoRequired(control: FormControl): { [key: string]: boolean } | null {
@@ -97,7 +112,12 @@ export class SuinoFormComponent {
       return;
     }
 
-    this.service.save(this.suinoForm.value);
+    if (this.action == ActionEnum.CREATE) {
+      this.service.save(this.suinoForm.value);
+    } else if (this.action == ActionEnum.EDIT) {
+      this.service.edit(this.suinoForm.value);
+    }
+
     this.openSnackBar();
   }
 

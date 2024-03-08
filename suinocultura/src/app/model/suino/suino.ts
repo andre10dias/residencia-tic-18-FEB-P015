@@ -7,6 +7,8 @@ export class Suino {
     private _dataSaida: Date;
     private _status: string;
     private _sexo: string;
+    private _createdAt: Date;
+    private _updatedAt: Date | null;
 
     constructor(
         id: string,
@@ -17,6 +19,8 @@ export class Suino {
         dataSaida: Date,
         status: string,
         sexo: string,
+        createdAt: Date,
+        updatedAt: Date | null
     ) {
         this._id = id;
         this._brincoAnimal = brincoAnimal;
@@ -26,6 +30,8 @@ export class Suino {
         this._dataSaida = dataSaida;
         this._status = status;
         this._sexo = sexo;
+        this._createdAt = createdAt;
+        this._updatedAt = updatedAt;
     }
 
     get id(): string {
@@ -90,6 +96,22 @@ export class Suino {
 
     set sexo(value: string) {
         this._sexo = value;
+    }
+
+    get createdAt(): Date {
+        return this._createdAt;
+    }
+
+    set createdAt(value: Date) {
+        this._createdAt = value;
+    }
+
+    get updatedAt(): Date | null {
+        return this._updatedAt;
+    }
+
+    set updatedAt(value: Date | null) {
+        this._updatedAt = value;
     }
 
 }

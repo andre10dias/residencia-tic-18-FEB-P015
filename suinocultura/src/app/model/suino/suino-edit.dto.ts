@@ -7,5 +7,6 @@ export interface SuinoEditDTO {
     dataSaida: Date;
     status: string;
     sexo: string;
-    updateAt: Date
+    createdAt: Date;
+    updatedAt: Date
 }
