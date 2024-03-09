@@ -31,8 +31,20 @@
 }
 
 .content {
+    display: grid;
+    grid-template-rows: 220px 2000px;
+    row-gap: 10px;
     grid-row-start: 2;
     grid-row-end: 4;
+}
+
+.row-1 {
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+.row-2 {
+    grid-row-start: 2;
 }
 
 .btn-cadastrar {

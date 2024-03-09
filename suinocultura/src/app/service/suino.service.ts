@@ -36,18 +36,34 @@ export class SuinoService {
 
   private novoSuinoSubject = new Subject<any>();
   private novoSuino: SuinoListDTO = {} as SuinoListDTO;
+
   private _suinoAtualizado: SuinoListDTO = {} as SuinoListDTO;
+
+  private _suinosFiltradosSubject = new Subject<SuinoListDTO[]>();
   private _suinosFiltrados: SuinoListDTO[] = [];
+
+  private _resetSubject = new Subject<SuinoListDTO[]>();
+  private _resetList: SuinoListDTO[] = [];
 
   constructor(
     private http: HttpClient,
     private util: SuinoUtil
-  ) { }
+  ) {
+    this.filtrar({});
+  }
 
   novoSuinoAdicionado() {
     setTimeout(() => {
       this.novoSuinoSubject.next(this.novoSuino);
     }, 1000);
+  }
+
+  get suinosFiltrados$(): Observable<SuinoListDTO[]> {
+    return this._suinosFiltradosSubject.asObservable();
+  }
+
+  get resetFiltros$(): Observable<SuinoListDTO[]> {
+    return this._resetSubject.asObservable();
   }
 
   get novoSuinoObservable() {
@@ -173,50 +189,72 @@ export class SuinoService {
     });
   }
 
-  filtar(form: any): void {
-    let listaFiltros: Suino[] = [];
+  filtrar(form: any): void {
+    this._suinosFiltrados = []; // Limpar a lista de suínos filtrados antes de aplicar novos filtros
+  
+    this.getAll().subscribe((listaSuinos: Suino[]) => {
+      listaSuinos.forEach((suino: Suino) => {
+        let comparaDataNascimento: boolean = false;
+        let comparaDataSaida: boolean = false;
+
+        if (form.dataNascimento) {
+          let data1 = this.util.formatarData(form.dataNascimento, 'dd/MM/yyyy');
+          let data2 = this.util.formatarData(suino.dataNascimento, 'dd/MM/yyyy');
+          comparaDataNascimento = this.util.compareDates(data1, data2, true) == 0 ? true : false;
+        }
+
+        if (form.dataSaida) {
+          let data1 = this.util.formatarData(form.dataSaida, 'dd/MM/yyyy');
+          let data2 = this.util.formatarData(suino.dataSaida, 'dd/MM/yyyy');
+          comparaDataSaida = this.util.compareDates(data1, data2, true) == 0 ? true : false;
+        }
+
+        // Verificar se os campos do formulário foram preenchidos e se correspondem aos dados do suíno
+        if ((!form.brincoPai || form.brincoPai == suino.brincoPai) &&
+            (!form.brincoMae || form.brincoMae == suino.brincoMae) &&
+            (!form.dataNascimento || comparaDataNascimento) &&
+            (!form.dataSaida || comparaDataSaida) &&
+            (!form.status || form.status == suino.status) &&
+            (!form.sexo || form.sexo == suino.sexo)) {
+              
+          this._suinosFiltrados.push({
+            id: suino.id,
+            brincoAnimal: suino.brincoAnimal,
+            brincoPai: suino.brincoPai,
+            brincoMae: suino.brincoMae,
+            dataNascimento: this.util.formatarData(suino.dataNascimento, 'dd/MM/yyyy'),
+            dataSaida: this.util.formatarData(suino.dataSaida, 'dd/MM/yyyy'),
+            status: suino.status,
+            sexo: suino.sexo,
+            createdAt: this.util.formatarData(suino.createdAt, 'dd/MM/yyyy')
+          });
+        }
+      });
+    });
+
+    this._suinosFiltradosSubject.next(this._suinosFiltrados);
+  }
+
+  resetarFiltro() {
+    this._suinosFiltrados = [];
 
     this.getAll().subscribe((listaSuinos: Suino[]) => {
-      listaSuinos.filter((suino: Suino) => {
-        if (form.brincoPai && form.brincoPai == suino.brincoPai) {
-          listaFiltros.push(suino);
-        }
-
-        if (form.brincoMae && form.brincoMae == suino.brincoMae) {
-          listaFiltros.push(suino);
-        }
-
-        if (form.dataNascimento && form.dataNascimento == suino.dataNascimento) {
-          listaFiltros.push(suino);
-        }
-
-        if (form.dataSaida && form.dataSaida == suino.dataSaida) {
-          listaFiltros.push(suino);
-        }
-
-        if (form.status && form.status == suino.status) {
-          listaFiltros.push(suino);
-        }
-
-        if (form.sexo && form.sexo == suino.sexo) {
-          listaFiltros.push(suino);
-        }
-      })
+      listaSuinos.forEach((suino: Suino) => {
+        this._suinosFiltrados.push({
+          id: suino.id,
+          brincoAnimal: suino.brincoAnimal,
+          brincoPai: suino.brincoPai,
+          brincoMae: suino.brincoMae,
+          dataNascimento: this.util.formatarData(suino.dataNascimento, 'dd/MM/yyyy'),
+          dataSaida: this.util.formatarData(suino.dataSaida, 'dd/MM/yyyy'),
+          status: suino.status,
+          sexo: suino.sexo,
+          createdAt: this.util.formatarData(suino.createdAt, 'dd/MM/yyyy')
+        });
+      });
     });
 
-    listaFiltros.forEach((suino: Suino) => {
-      this._suinosFiltrados.push({
-        id: suino.id,
-        brincoAnimal: suino.brincoAnimal,
-        brincoPai: suino.brincoPai,
-        brincoMae: suino.brincoMae,
-        dataNascimento: this.util.formatarData(suino.dataNascimento, 'dd/MM/yyyy'),
-        dataSaida: this.util.formatarData(suino.dataSaida, 'dd/MM/yyyy'),
-        status: suino.status,
-        sexo: suino.sexo,
-        createdAt: this.util.formatarData(suino.createdAt, 'dd/MM/yyyy')
-      })
-    });
+    this._suinosFiltradosSubject.next(this._suinosFiltrados);
   }
 
   get suinosFiltrados(): SuinoListDTO[] {

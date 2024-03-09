@@ -35,13 +35,18 @@ export class SuinoSearchComponent {
   }
 
   onSubmit(): void {
-    console.log('[SuinoSearchComponent] onSubmit: ', this.suinoSearch.value);
-    if (this.suinoSearch.value) {
-      this.service.filtar(this.suinoSearch.value);
-      this.listaSuinosFiltrados = this.service.suinosFiltrados;
-    }
+    this.service.filtrar(this.suinoSearch.value);
+    this.service.suinosFiltrados$.subscribe((suinos: SuinoListDTO[]) => {
+      this.listaSuinosFiltrados = suinos;
+    });
+  }
 
-    console.log('[SuinoSearchComponent] listaSuinosFiltrados: ', this.service.suinosFiltrados);
+  reset(): void {
+    this.suinoSearch.reset();
+    this.service.resetarFiltro();
+    this.service.suinosFiltrados$.subscribe((suinos: SuinoListDTO[]) => {
+      this.listaSuinosFiltrados = suinos;
+    })
   }
 
 }

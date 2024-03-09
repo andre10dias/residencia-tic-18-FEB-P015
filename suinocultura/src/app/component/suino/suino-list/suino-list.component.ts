@@ -47,6 +47,7 @@ export class SuinoListComponent implements OnInit {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
   ) {
+    this.resultadoBusca();
     this.carregardadosList();
   }
 
@@ -67,34 +68,79 @@ export class SuinoListComponent implements OnInit {
     //   'dataNascimento', 'dataSaida', 'status', 'sexo', 'idade', 'action'];
     // }
   }
-  
+
+  // carregardadosList(): void {
+  //   this.spinnerOn();
+
+  //   this.service.getAll().subscribe({
+  //     next: suinos => {
+  //       this.listaSuinos = this.converter.toListSuinoListDTOs(suinos);
+  //       this.dataSource = new MatTableDataSource<SuinoListDTO>(this.listaSuinos);
+  //       this.dataSource.paginator = this.paginator;
+  //       this.dataSource.sort = this.sort;
+  //       this.spinnerOff();
+  //     },
+  //     error: error => {
+  //       console.error('Erro ao carregar suínos:', error);
+  //       this.spinnerOff();
+  //     }
+  //   });
+  // }
+
   carregardadosList(): void {
     this.service.getAll().subscribe({
       next: suimos => {
-        this.spinnerOn();
         this.listaSuinos = this.converter.toListSuinoListDTOs(suimos);
-        this.dataSource = new MatTableDataSource<SuinoListDTO>(this.listaSuinos);
-        this.sortedData = this.listaSuinos.slice();
-        // this.dadosCarregados = true;
-        // console.log('[suimos-list] carregarsuimos: ', this.listaSuinos);
-        
-        setTimeout(() => {
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          let label = document.querySelector('#mat-paginator-page-size-label-0') as HTMLElement;
-          // let label2 = document.querySelector('.mat-mdc-paginator-range-label') as HTMLElement;
-          
-          if (label) {
-            label.innerHTML = 'Itens por página:';
-          }
-        }, 200);
-
-        this.spinnerOff();
+        this.atualizarDadosLista(this.listaSuinos);
       },
       error: error => {
-        console.error('Erro ao carregar suimos:', error);
+        console.error('Erro ao carregar a lista:', error);
       }
     });
+  }
+
+  resultadoBusca(): void {
+    this.service.suinosFiltrados$.subscribe({
+      next: (suinos: SuinoListDTO[]) => {
+        this.atualizarDadosLista(suinos);
+      },
+      error: error => {
+        console.error('Erro ao carregar a lista:', error);
+      }
+    })
+  }
+  
+  resetarBusca(): void {
+    this.service.resetFiltros$.subscribe({
+      next: (suinos: SuinoListDTO[]) => {
+        this.atualizarDadosLista(suinos);
+      },
+      error: error => {
+        console.error('Erro ao carregar a lista:', error);
+      }
+    })
+  }
+
+  atualizarDadosLista(lista: SuinoListDTO[]): void {
+    this.spinnerOn();
+    this.listaSuinos = lista;
+    this.dataSource = new MatTableDataSource<SuinoListDTO>(this.listaSuinos);
+    this.sortedData = this.listaSuinos.slice();
+
+    this.dataSource._updateChangeSubscription();
+    
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      let label = document.querySelector('#mat-paginator-page-size-label-0') as HTMLElement;
+      // let label2 = document.querySelector('.mat-mdc-paginator-range-label') as HTMLElement;
+      
+      if (label) {
+        label.innerHTML = 'Itens por página:';
+      }
+    }, 500);
+
+    this.spinnerOff();
   }
 
   openDialog(element?: SuinoFormDTO): void {

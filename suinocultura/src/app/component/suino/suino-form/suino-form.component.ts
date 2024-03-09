@@ -35,22 +35,22 @@ export class SuinoFormComponent implements OnInit {
     this.suinoForm = new FormGroup({
       'id': new FormControl(null),
       'brincoAnimal': new FormControl(null, [
+        Validators.required,
+        Validators.pattern(/^\d+$/),
         this.brincoRequired,
         this.brincoNumeric, 
-        Validators.required,
-        Validators.pattern(/^\d+$/)
       ]),
       'brincoPai': new FormControl(null, [
+        Validators.required,
+        Validators.pattern(/^\d+$/),
         this.brincoRequired,
         this.brincoNumeric,  
-        Validators.required,
-        Validators.pattern(/^\d+$/)
       ]),
       'brincoMae': new FormControl(null, [
+        Validators.required, 
+        Validators.pattern(/^\d+$/),
         this.brincoRequired,
         this.brincoNumeric, 
-        Validators.required, 
-        Validators.pattern(/^\d+$/)
       ]),
       'dataNascimento': new FormControl(null, [
         Validators.required
