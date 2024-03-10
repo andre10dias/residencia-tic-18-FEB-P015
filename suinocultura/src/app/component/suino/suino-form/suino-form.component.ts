@@ -16,7 +16,7 @@ export class SuinoFormComponent implements OnInit {
   @ViewChild('suinoFormRef') suinoFormRef: any;
   suinoForm: FormGroup;
 
-  title = 'Cadastrar Suino';
+  title = 'Cadastrar suino';
   btnText = 'Cadastrar';
   action = ActionEnum.CREATE;
   dadosItemSelecionado: SuinoFormDTO = {} as SuinoFormDTO;

@@ -11,8 +11,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
-import { SuinoModule } from './component/suino/suino.module';
 import { DialogModule } from './component/dialog/dialog.module';
+import { SuinoModule } from './component/suino/suino.module';
+import { PesoModule } from './component/peso/peso.module';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
@@ -36,7 +37,8 @@ import { FooterComponent } from './component/footer/footer.component';
     MatFormFieldModule,
     MatSnackBarModule,
     DialogModule,
-    SuinoModule
+    SuinoModule,
+    PesoModule
   ],
   providers: [
     provideAnimationsAsync()

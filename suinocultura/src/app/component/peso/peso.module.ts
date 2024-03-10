@@ -17,7 +17,6 @@ import {MatListModule} from '@angular/material/list';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatExpansionModule} from '@angular/material/expansion';
 import {
   MatDialogTitle,
   MatDialogContent,
@@ -25,26 +24,21 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 
-import { IdadePipe } from '../../pipe/idade.pipe';
-import { StatusPipe } from '../../pipe/status.pipe';
-import { SexoPipe } from '../../pipe/sexo.pipe';
-
-import { SuinoComponent } from './suino.component';
-import { SuinoFormComponent } from './suino-form/suino-form.component';
-import { SuinoListComponent } from './suino-list/suino-list.component';
-import { SuinoSearchComponent } from './suino-search/suino-search.component';
+import { PesoComponent } from './peso.component';
+import { PesoFormComponent } from './peso-form/peso-form.component';
+import { PesoListComponent } from './peso-list/peso-list.component';
+import { PesoPipe } from '../../pipe/peso.pipe';
+import { PesoHistoricoComponent } from './peso-historico/peso-historico.component';
 
 
 
 @NgModule({
   declarations: [
-    SuinoComponent,
-    SuinoFormComponent,
-    SuinoListComponent,
-    IdadePipe,
-    StatusPipe,
-    SexoPipe,
-    SuinoSearchComponent
+    PesoComponent,
+    PesoFormComponent,
+    PesoListComponent,
+    PesoPipe,
+    PesoHistoricoComponent
   ],
   imports: [
     CommonModule,
@@ -68,10 +62,9 @@ import { SuinoSearchComponent } from './suino-search/suino-search.component';
     MatPaginatorModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatExpansionModule
   ],
   exports: [
-    SuinoComponent
+    PesoComponent
   ]
 })
-export class SuinoModule { }
+export class PesoModule { }
