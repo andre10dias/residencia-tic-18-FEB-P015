@@ -3,6 +3,7 @@ import { SuinoService } from '../../service/suino.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActionEnum } from '../../enum/action-enum';
 import { PesoFormComponent } from './peso-form/peso-form.component';
+import { PesoService } from '../../service/peso.service';
 
 @Component({
   selector: 'app-peso',
@@ -13,7 +14,7 @@ export class PesoComponent {
   spinner: boolean = true;
 
   constructor(
-    private service: SuinoService,
+    private service: PesoService,
     public dialog: MatDialog
   ) {
   }
@@ -35,7 +36,7 @@ export class PesoComponent {
         this.spinner = false;
         // console.log('[SuinoComponent] The dialog was closed');
         // console.log('[SuinoComponent] element: ', element);
-        this.service.novoSuinoAdicionado();
+        this.service.novoPesoAdicionado();
   
         setTimeout(() => {
           this.spinner = true;

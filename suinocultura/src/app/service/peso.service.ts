@@ -9,6 +9,7 @@ import { FirebaseCredentials } from '../model/firebase/firebase-credentials';
 import { PesoCreateDTO } from '../model/peso/peso-create.dto';
 import { PesoEditDTO } from '../model/peso/peso-edit.dto';
 import { Suino } from '../model/suino/suino';
+import { PesoChartDTO } from '../model/peso/peso-chart.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,12 @@ export class PesoService {
     return this._pesoAtualizado;
   }
 
+  novoPesoAdicionado() {
+    setTimeout(() => {
+      this.novoPesoSubject.next(this.novoPeso);
+    }, 1000);
+  }
+
   // retorna a lista de pesos ordenados e sem valores repetidos
   get listaPesosAnimal() {
     return this.getSuinoAll().pipe(
@@ -45,6 +52,22 @@ export class PesoService {
         const pesosUnicos = new Set<number>();
         listaSuino.forEach(suino => pesosUnicos.add(suino.brincoAnimal));
         return Array.from(pesosUnicos).sort((a, b) => a - b);
+      })
+    );
+  }
+
+  retornaListaPesosByBrincoAnimal(brincoAnimal: number): Observable<Peso[]> {
+    return this.getAll().pipe(
+      map(pesos => {
+        if (!pesos) {
+          return [];
+        }
+
+        const listaPesos = pesos.filter(peso => peso.brincoAnimal === brincoAnimal);
+  
+        // Ordena os pesos pela dataPeso
+        listaPesos.sort((a, b) => a.dataPeso.getTime() - b.dataPeso.getTime());
+        return listaPesos;
       })
     );
   }
@@ -68,7 +91,7 @@ export class PesoService {
   getPesoById(id: string): Observable<Peso> {
     return this.http.get<Peso>(`${this.baseUrl}/${id}.json`).pipe(
       map((data: any) => {
-        data.id = data.name;
+        data.id = id;
         return data as Peso;
       })
     );
@@ -88,6 +111,14 @@ export class PesoService {
         return listaSuino;
       })
     );
+  }
+
+  getPesoByBrincoAnimal(brincoAnimal: number): Observable<Peso[]> {
+    let lista =  this.getAll().pipe(
+      map(pesos => pesos.filter(peso => peso.brincoAnimal === brincoAnimal))
+    );
+
+    return lista;
   }
 
   save(form: any) {
@@ -123,7 +154,6 @@ export class PesoService {
     const dataPeso = new Date(Number(anoNasc), Number(mesNasc) - 1, Number(diaNasc));
 
     let edit: PesoEditDTO = {
-      id: form.id,
       brincoAnimal: form.brincoAnimal,
       peso: form.peso,
       dataPeso: dataPeso,
@@ -134,9 +164,9 @@ export class PesoService {
     this.http.put(`${this.baseUrl}/${form.id}.json`, edit).subscribe({
       next: (data: any) => {
         this._pesoAtualizado = {
-          id: form.id,
-          brincoAnimal: form.brincoAnimal,
-          peso: form.peso,
+          id: data.id,
+          brincoAnimal: edit.brincoAnimal,
+          peso: edit.peso,
           dataPeso: this.util.formatarData(edit.dataPeso, 'dd/MM/yyyy'),
           createdAt: this.util.formatarData(edit.createdAt, 'dd/MM/yyyy')
         };

@@ -13,6 +13,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { DialogComponent } from '../../dialog/dialog.component';
 import { PesoConverter } from '../../../model/peso/peso.converter';
+import { PesoHistoricoComponent } from '../peso-historico/peso-historico.component';
+import { PesoChartDTO } from '../../../model/peso/peso-chart.dto';
 
 @Component({
   selector: 'app-peso-list',
@@ -132,6 +134,33 @@ export class PesoListComponent {
         peso.id = id;
         let pesoFormDTO: PesoFormDTO = this.converter.toPesoFormDTO(peso);
         this.openDialog(pesoFormDTO);
+      }
+    });
+  }
+
+  openHistoricoDialog(element?: PesoChartDTO[]): void {
+    const dialogRef = this.dialog.open(PesoHistoricoComponent, {
+      width: '800px',
+      disableClose: true,
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // this.spinnerOn();
+        // this.spinnerOff();
+      }
+    });
+  }
+
+  historicoItem(id: string): void {
+    this.service.getPesoById(id).subscribe(peso => {
+      if (peso) {
+        peso.id = id;
+        this.service.getPesoByBrincoAnimal(peso.brincoAnimal).subscribe(pesos => {
+          const pesoChart: PesoChartDTO[] = this.converter.toListPesoChartDTOs(pesos);
+          this.openHistoricoDialog(pesoChart);
+        });
       }
     });
   }

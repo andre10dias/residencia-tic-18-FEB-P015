@@ -93,7 +93,7 @@ export class SuinoService {
   getSuinoById(id: string): Observable<Suino> {
     return this.http.get<Suino>(`${this.baseUrl}/${id}.json`).pipe(
       map((data: any) => {
-        data.id = data.name;
+        data.id = id;
         return data as Suino;
       })
     );
@@ -146,7 +146,6 @@ export class SuinoService {
     const dataSaida = new Date(Number(anoSai), Number(mesSai) - 1, Number(diaSai));
 
     let edit: SuinoEditDTO = {
-      id: form.id,
       brincoAnimal: form.brincoAnimal,
       brincoPai: form.brincoPai,
       brincoMae: form.brincoMae,

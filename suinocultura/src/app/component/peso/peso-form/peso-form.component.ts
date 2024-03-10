@@ -29,7 +29,7 @@ export class PesoFormComponent implements OnInit {
       private service: PesoService, 
       private util: SuinoUtil,
       private snackBar: MatSnackBar,
-      public dialogRef: MatDialogRef<SuinoFormComponent>,
+      public dialogRef: MatDialogRef<PesoFormComponent>,
       @Inject(MAT_DIALOG_DATA) public data: any,
     ) 
     {
@@ -45,7 +45,7 @@ export class PesoFormComponent implements OnInit {
         ]),
         'peso': new FormControl(null, [
           Validators.required,
-          Validators.pattern(/^\d{0,3}(,\d{0,2})?$/)
+          Validators.pattern(/^\d{0,3}(.\d{0,2})?$/)
         ]),
         'dataPeso': new FormControl(null, [
           Validators.required
@@ -75,7 +75,6 @@ export class PesoFormComponent implements OnInit {
       } 
       else if (this.action == ActionEnum.EDIT) {
         this.service.edit(this.pesoForm.value);
-        console.log(this.pesoForm.value);
         this.openSnackBar('Atualizado com sucesso!');
       }
   

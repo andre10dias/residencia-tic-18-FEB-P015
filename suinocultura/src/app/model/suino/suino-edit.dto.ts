@@ -1,5 +1,4 @@
 export interface SuinoEditDTO {
-    id: string
     brincoAnimal: number
     brincoPai: number
     brincoMae: number

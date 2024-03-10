@@ -4,6 +4,7 @@ import { SuinoUtil } from "../../util/suino.util";
 import { PesoListDTO } from "./peso-list.dto";
 import { Peso } from "./peso";
 import { PesoFormDTO } from "./peso-form.dto";
+import { PesoChartDTO } from "./peso-chart.dto";
 
 @Injectable({
     providedIn: 'root'
@@ -51,6 +52,24 @@ export class PesoConverter {
         };
 
         return pesoFormDTO;
+    }
+
+    toListPesoChartDTOs(listaPesos: Peso[]): PesoChartDTO[] {
+        let pesosChartDTO: PesoChartDTO[] = [];
+        let peso: PesoChartDTO;
+        
+        listaPesos.forEach(data => {
+            peso = {
+                id: data.id,
+                brincoAnimal: data.brincoAnimal,
+                dataPeso: this.util.formatarData(data.dataPeso, 'dd/MM/yyyy'),
+                peso: data.peso
+            }
+
+            pesosChartDTO.push(peso);
+        });
+
+        return pesosChartDTO;
     }
     
     // toAtendimentoEditDTO(atendimento: Atendimento): AtendimentoEditDTO {

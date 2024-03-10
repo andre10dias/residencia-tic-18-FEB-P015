@@ -89,24 +89,4 @@ export class SuinoUtil {
         // return (dateA < dateB ? -1 : 1) * (isAsc ? 1 : -1);
     }
 
-    // formatarPeso(valor: string): string {
-    //     // Remover caracteres não numéricos do valor atual
-    //     let valorFormatado = valor.replace(/[^\d.]/g, '');
-    
-    //     // Limitar a três dígitos antes da vírgula e dois dígitos após a vírgula
-    //     const partes = valorFormatado.split('.');
-    //     if (partes[0].length > 3) {
-    //       partes[0] = partes[0].slice(0, 3);
-    //     }
-    //     if (partes.length > 1 && partes[1].length > 2) {
-    //       partes[1] = partes[1].slice(0, 2);
-    //     }
-    
-    //     // Formatar o valor com três dígitos antes da vírgula e dois dígitos após a vírgula
-    //     valorFormatado = partes.join('.');
-        
-    //     // Definir o valor formatado de volta no FormControl
-    //     return valorFormatado;
-    // }
-
 }   
