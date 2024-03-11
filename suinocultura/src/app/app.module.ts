@@ -18,13 +18,15 @@ import { PesoModule } from './component/peso/peso.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { FooterComponent } from './component/footer/footer.component';
+import { HomeComponent } from './component/home/home.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    FooterComponent
+    FooterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

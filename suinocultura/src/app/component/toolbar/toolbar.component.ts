@@ -8,22 +8,26 @@ import { Router } from '@angular/router';
 })
 export class ToolbarComponent {
   constructor(
-    // private route: Router,
+    private route: Router,
     // private service: AuthService
   ) { }
 
-  // rotaHome() {
-  //   this.route.navigate(['/home']);
-  // }
+  rotaHome() {
+    this.route.navigate(['/home']);
+  }
 
-  // rotaAtendimentos() {
-  //   this.route.navigate(['/atendimentos']);
-  // }
+  rotaSuino() {
+    this.route.navigate(['/suino']);
+  }
 
-  // sair() {
-  //   localStorage.clear();
-  //   this.service.logout();
-  //   this.route.navigate(['/login']);
-  // }
+  rotaPeso() {
+    this.route.navigate(['/peso']);
+  }
+
+  sair() {
+    localStorage.clear();
+    // this.service.logout();
+    this.route.navigate(['/login']);
+  }
 
 }
