@@ -1,6 +1,11 @@
 # vscode
 .vscode/
 
+# firebase
+.firebase/
+.firebaserc
+firebase.json
+
 # Logs
 logs
 *.log
