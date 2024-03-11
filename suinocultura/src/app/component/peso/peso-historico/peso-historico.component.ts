@@ -17,6 +17,7 @@ export class PesoHistoricoComponent implements AfterViewInit {
   dadosItemSelecionado: PesoFormDTO = {} as PesoFormDTO;
   dadosTabela: (string | number)[][] = [];
   listaPesos: PesoChartDTO[] = [];
+  brincoAnimal: number;
 
   constructor(
     private service: PesoService,
@@ -24,6 +25,7 @@ export class PesoHistoricoComponent implements AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.listaPesos = data;
+    this.brincoAnimal = data[0].brincoAnimal;
   }
     
   ngAfterViewInit() {
